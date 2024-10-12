@@ -20,7 +20,7 @@ public class Game  {
 
     public Game() throws java.io.IOException {
 
-        TerminalSize terminalSize = new TerminalSize(40, 20);
+        TerminalSize terminalSize = new TerminalSize(30, 15);
 
         DefaultTerminalFactory terminalFactory = new
                 DefaultTerminalFactory()
@@ -32,7 +32,7 @@ public class Game  {
         screen.setCursorPosition(null);
         screen.startScreen();
         screen.doResizeIfNecessary();
-        arena = new Arena(40,20);
+        arena = new Arena(30,15);
     }
 
     private void processKey(KeyStroke key) throws IOException {
