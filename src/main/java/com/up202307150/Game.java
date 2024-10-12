@@ -42,6 +42,10 @@ public class Game  {
                 running = false;
                 screen.close();
             }
+            if (key.getKeyType() == KeyType.EOF){
+                running = false;
+                screen.close();
+            }
         } else {
             arena.processKey(key);
         }
@@ -60,6 +64,7 @@ public class Game  {
             draw();
             KeyStroke key = screen.readInput();
             processKey(key);
+
         }
 
     }
