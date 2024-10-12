@@ -81,9 +81,9 @@ public class Arena {
 
     public void draw(TextGraphics graphics) throws IOException{
         graphics.setBackgroundColor(TextColor.Factory.fromString("#3e2d51"));
-                graphics.fillRectangle(new TerminalPosition(0, 0), new
-                        TerminalSize(width, height), ' ');
+        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
         hero.draw(graphics);
+
         for (Wall wall : walls){
             wall.draw(graphics);
         }
