@@ -1,5 +1,9 @@
 package com.up202307150;
 
+import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 
@@ -45,7 +49,10 @@ public class Arena {
     public boolean canHeroMove(Position position){
         return position.getX()>=0 && position.getX() < width && position.getY()>=0 && position.getY() < height;
     }
-    public void draw(Screen screen) throws IOException{
-        hero.draw(screen);
+    public void draw(TextGraphics graphics) throws IOException{
+        graphics.setBackgroundColor(TextColor.Factory.fromString("#3e2d51"));
+                graphics.fillRectangle(new TerminalPosition(0, 0), new
+                        TerminalSize(width, height), ' ');
+        hero.draw(graphics);
     }
 }

@@ -1,6 +1,7 @@
 package com.up202307150;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
@@ -15,6 +16,7 @@ public class Game  {
     public final Screen screen;
     public boolean running = true;
     public final Arena arena;
+
 
     public Game() throws java.io.IOException {
 
@@ -44,10 +46,10 @@ public class Game  {
             arena.processKey(key);
         }
     }
-    private void draw() throws IOException {
-
+    public void draw() throws IOException {
         screen.clear();
-        arena.draw(screen);
+        TextGraphics graphics = screen.newTextGraphics();
+        arena.draw(graphics);
         screen.refresh();
     }
 
