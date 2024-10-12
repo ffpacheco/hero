@@ -5,13 +5,12 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.sun.jdi.PrimitiveValue;
+
 
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListResourceBundle;
 import java.util.Random;
 
 public class Arena {
@@ -21,6 +20,7 @@ public class Arena {
     private final List<Wall> walls;
     private final List<Coin> coins;
     private final List<Monster> monsters;
+
 
     public Arena(int width, int height){
         this.height = height;
@@ -53,6 +53,7 @@ public class Arena {
             default:
                 break;
         }
+        moveMonsters();
     }
 
 
@@ -60,6 +61,7 @@ public class Arena {
         if (canHeroMove(position)) {
             hero.setPosition(position);
             retrieveCoins();
+            verifyMonsterCollisions();
         }
     }
     public boolean canHeroMove(Position position) {
@@ -146,6 +148,29 @@ public class Arena {
             if (hero.getPosition().equals(coin.getPosition())) {
                 coins.remove(i);
                 break;
+            }
+        }
+    }
+
+    private void moveMonsters(){
+        for (Monster monster : monsters){
+            Position newPosition= monster.move();
+            monster.setPosition(newPosition);
+        }
+    }
+
+    private void verifyMonsterCollisions(){
+        for (Monster monster : monsters) {
+            if (hero.getPosition().equals(monster.getPosition())) {
+                System.out.println(
+                        "   000000    0000000   0000000    000000\n" +
+                        " 00      00  00    00  00    00  00\n" +
+                        " 00      00  00    00  00    00  00\n" +
+                        " 00      00  000000    000000     00000 \n" +
+                        " 00      00  00        00             00\n" +
+                        " 00      00  00        00             00\n" +
+                        "   000000    00        00        000000\n");
+                System.exit(0);
             }
         }
     }

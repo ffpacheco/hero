@@ -34,17 +34,18 @@ public class Game  {
         screen.doResizeIfNecessary();
         arena = new Arena(30,15);
     }
-
+    public void endGame() throws IOException {
+        running=false;
+        screen.close();
+    }
     private void processKey(KeyStroke key) throws IOException {
         if (key.getKeyType() == KeyType.Character) {
             char c = key.getCharacter();
             if (c == 'q' || c == 'Q') {
-                running = false;
-                screen.close();
+                endGame();
             }
             if (key.getKeyType() == KeyType.EOF){
-                running = false;
-                screen.close();
+                endGame();
             }
         } else {
             arena.processKey(key);
