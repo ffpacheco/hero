@@ -5,11 +5,13 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.sun.jdi.PrimitiveValue;
 
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListResourceBundle;
 import java.util.Random;
 
 public class Arena {
@@ -18,6 +20,7 @@ public class Arena {
     private final Hero hero;
     private final List<Wall> walls;
     private final List<Coin> coins;
+    private final List<Monster> monsters;
 
     public Arena(int width, int height){
         this.height = height;
@@ -25,6 +28,7 @@ public class Arena {
         this.hero = new Hero(new Position(14,7));
         this.walls = createWalls();
         this.coins = createCoins();
+        this.monsters = createMonsters();
     }
 
 
@@ -97,25 +101,39 @@ public class Arena {
             int y = random.nextInt(height - 2) + 1;
             Position newPosition = new Position(x, y);
 
-            if (canSpawnCoinAt(newPosition, coins)) {
+            if (canSpawnAt(newPosition, coins)) {
                 coins.add(new Coin(newPosition));
             }
         }
         return coins;
     }
 
+    private List<Monster> createMonsters(){
+        Random random = new Random();
+        ArrayList<Monster> monsters = new ArrayList<>();
+        int monstersCount = 5;
+        while (monsters.size() < monstersCount){
+            int x = random.nextInt(width - 2) + 1;
+            int y = random.nextInt(height - 2) + 1;
+            Position newPosition = new Position(x, y);
 
 
-    private boolean canSpawnCoinAt(Position position, List<Coin> coins) {
+            if (canSpawnAt(newPosition, coins) &&  canSpawnAt(newPosition, monsters)) {
+                monsters.add(new Monster(newPosition));
+            }
+        }
+        return monsters;
+    }
+
+    private boolean canSpawnAt(Position position, List<? extends Element> elements) {
 
         for (Wall wall : walls) {
             if (wall.getPosition().equals(position)) {
                 return false;
             }
         }
-
-        for (Coin coin : coins) {
-            if (coin.getPosition().equals(position)) {
+        for (Element element : elements) {
+            if (element.getPosition().equals(position)) {
                 return false;
             }
         }
@@ -144,6 +162,10 @@ public class Arena {
         }
         for (Coin coin : coins){
             coin.draw(graphics);
+        }
+
+        for (Monster monster : monsters){
+            monster.draw(graphics);
         }
 
     }
