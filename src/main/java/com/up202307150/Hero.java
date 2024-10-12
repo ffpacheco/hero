@@ -11,6 +11,10 @@ public class Hero {
         this.position=position;
     }
 
+    public Position getPosition(){
+        return position;
+    }
+
     public Position moveLeft(){
         return new Position(position.getX() - 1, position.getY() );
     }

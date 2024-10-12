@@ -45,13 +45,24 @@ public class Arena {
                 break;
         }
     }
+    
 
     public void moveHero(Position position) {
         if (canHeroMove(position))
             hero.setPosition(position);
     }
-    public boolean canHeroMove(Position position){
-        return position.getX()>=1 && position.getX() < width-1 && position.getY()>=1 && position.getY() < height-1;
+    public boolean canHeroMove(Position position) {
+
+        if (position.getX() < 0 || position.getX() >= width  || position.getY() < 0 || position.getY() >= height) {
+            return false;
+        }
+
+        for (Wall wall : walls) {
+            if (wall.getPosition().equals(position)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private List<Wall> createWalls(){
