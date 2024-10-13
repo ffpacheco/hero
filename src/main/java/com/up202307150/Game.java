@@ -74,6 +74,7 @@ public class Game  {
     }
 
     public void drawOverScreen(TextGraphics graphics){
+<<<<<<< HEAD
         graphics.setForegroundColor(TextColor.Factory.fromString("#e15048"));
         graphics.enableModifiers(SGR.BOLD);
         graphics.putString(14,8, "GAME OVER!");
@@ -81,6 +82,11 @@ public class Game  {
         graphics.setForegroundColor(TextColor.Factory.fromString("#838fce"));
         graphics.putString(8,10,"Press 'Space' to restart");
         graphics.putString(11,11," or 'Q' to quit");
+=======
+        graphics.putString(10,6, "GAME OVER");
+        graphics.putString(3,7,"Press 'Space' to restart");
+        graphics.putString(7,8," or 'Q' to quit");
+>>>>>>> 1b579fd6bf73c87cd4868d9c11fc3c5d1e68308e
 
     }
 
