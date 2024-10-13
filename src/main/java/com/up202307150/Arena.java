@@ -21,6 +21,7 @@ public class Arena {
     private final List<Coin> coins;
     private final List<Monster> monsters;
 
+
     public Arena(int width, int height){
         this.height = height;
         this.width = width;
@@ -82,6 +83,10 @@ public class Arena {
             }
         }
         return true;
+    }
+
+    public boolean allCoinsCollected(){
+        return coins.isEmpty();
     }
 
     private List<Wall> createWalls(){
@@ -154,6 +159,7 @@ public class Arena {
             if (hero.getPosition().equals(coin.getPosition())) {
                 coins.remove(i);
                 break;
+
             }
         }
     }

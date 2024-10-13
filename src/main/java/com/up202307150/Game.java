@@ -19,6 +19,7 @@ public class Game  {
     public boolean running = true;
     public final Arena arena;
     private boolean gameOver = false;
+    private boolean gameWon = false;
 
 
     public Game() throws java.io.IOException {
@@ -45,13 +46,14 @@ public class Game  {
 
     public void restart() {
         gameOver = false;
+        gameWon = false;
         arena.restart();
 
     }
     private void processKey(KeyStroke key) throws IOException {
         if (key.getKeyType() == KeyType.Character) {
             char c = key.getCharacter();
-            if (c== ' ' && gameOver){
+            if (c== ' ' && gameOver || c== ' ' && gameWon){
                 restart();
             }
             if (c == 'q' || c == 'Q') {
@@ -65,16 +67,22 @@ public class Game  {
             if (arena.verifyMonsterCollisions()) {
                 handleGameOver();
             }
+            if (arena.allCoinsCollected()){
+                handleGameWon();
+            }
         }
     }
-
+    public void handleGameWon() throws IOException {
+        gameWon=true;
+        draw();
+    }
     public void handleGameOver() throws IOException {
         gameOver=true;
         draw();
     }
 
     public void drawOverScreen(TextGraphics graphics){
-<<<<<<< HEAD
+
         graphics.setForegroundColor(TextColor.Factory.fromString("#e15048"));
         graphics.enableModifiers(SGR.BOLD);
         graphics.putString(14,8, "GAME OVER!");
@@ -82,13 +90,20 @@ public class Game  {
         graphics.setForegroundColor(TextColor.Factory.fromString("#838fce"));
         graphics.putString(8,10,"Press 'Space' to restart");
         graphics.putString(11,11," or 'Q' to quit");
-=======
-        graphics.putString(10,6, "GAME OVER");
-        graphics.putString(3,7,"Press 'Space' to restart");
-        graphics.putString(7,8," or 'Q' to quit");
->>>>>>> 1b579fd6bf73c87cd4868d9c11fc3c5d1e68308e
 
     }
+    public void drawWinScreen(TextGraphics graphics){
+
+        graphics.setForegroundColor(TextColor.Factory.fromString("#5fc787"));
+        graphics.enableModifiers(SGR.BOLD);
+        graphics.putString(15,8, "YOU WON!");
+        graphics.disableModifiers(SGR.BOLD);
+        graphics.setForegroundColor(TextColor.Factory.fromString("#838fce"));
+        graphics.putString(8,10,"Press 'Space' to restart");
+        graphics.putString(11,11," or 'Q' to quit");
+
+    }
+
 
     public void draw() throws IOException {
         screen.clear();
@@ -96,6 +111,9 @@ public class Game  {
         if (gameOver){
             drawOverScreen(graphics);
         }
+        else if (gameWon)
+            drawWinScreen(graphics);
+
         else{arena.draw(graphics);}
 
         screen.refresh();
