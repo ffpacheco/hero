@@ -155,7 +155,9 @@ public class Arena {
     private void moveMonsters(){
         for (Monster monster : monsters){
             Position newPosition= monster.move();
-            monster.setPosition(newPosition);
+            if (canSpawnAt(newPosition,monsters)){
+                monster.setPosition(newPosition);
+            }
         }
     }
 
