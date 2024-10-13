@@ -8,7 +8,7 @@ import com.googlecode.lanterna.input.KeyStroke;
 
 
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +21,6 @@ public class Arena {
     private final List<Coin> coins;
     private final List<Monster> monsters;
 
-
     public Arena(int width, int height){
         this.height = height;
         this.width = width;
@@ -31,8 +30,15 @@ public class Arena {
         this.monsters = createMonsters();
     }
 
+    public void restart(){
+        this.hero.setPosition(new Position(14, 7));
+        this.coins.clear();
+        this.monsters.clear();
+        this.coins.addAll(createCoins());
+        this.monsters.addAll(createMonsters());
+    }
 
-    public void processKey(KeyStroke key) throws IOException {
+    public void processKey(KeyStroke key) {
         switch (key.getKeyType()) {
             case ArrowDown:
                 moveHero(hero.moveDown());
@@ -50,10 +56,10 @@ public class Arena {
                 moveHero(hero.moveLeft());
                 break;
 
-            default:
-                break;
-        }
+            default: break;
+            }
         moveMonsters();
+
     }
 
 
@@ -61,7 +67,7 @@ public class Arena {
         if (canHeroMove(position)) {
             hero.setPosition(position);
             retrieveCoins();
-            verifyMonsterCollisions();
+
         }
     }
     public boolean canHeroMove(Position position) {
@@ -161,24 +167,26 @@ public class Arena {
         }
     }
 
-    private void verifyMonsterCollisions(){
+    public boolean verifyMonsterCollisions(){
         for (Monster monster : monsters) {
             if (hero.getPosition().equals(monster.getPosition())) {
                 System.out.println(
-                        "   000000    0000000   0000000    000000\n" +
-                        " 00      00  00    00  00    00  00\n" +
-                        " 00      00  00    00  00    00  00\n" +
-                        " 00      00  000000    000000     00000 \n" +
-                        " 00      00  00        00             00\n" +
-                        " 00      00  00        00             00\n" +
-                        "   000000    00        00        000000\n");
-                System.exit(0);
+                        """
+                                   000000    0000000   0000000    000000\s
+                                 00      00  00    00  00    00  00
+                                 00      00  00    00  00    00  00
+                                 00      00  000000    000000     00000\s
+                                 00      00  00        00             00
+                                 00      00  00        00             00
+                                   000000    00        00        000000
+                                """);
+                    return true;
             }
-        }
+        }return false;
     }
 
 
-    public void draw(TextGraphics graphics) throws IOException{
+    public void draw(TextGraphics graphics) {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#3e2d51"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 

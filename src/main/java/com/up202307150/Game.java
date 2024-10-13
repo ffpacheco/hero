@@ -16,6 +16,7 @@ public class Game  {
     public final Screen screen;
     public boolean running = true;
     public final Arena arena;
+    private boolean gameOver = false;
 
 
     public Game() throws java.io.IOException {
@@ -35,12 +36,22 @@ public class Game  {
         arena = new Arena(30,15);
     }
     public void endGame() throws IOException {
+        gameOver=true;
         running=false;
         screen.close();
+    }
+
+    public void restart() {
+        gameOver = false;
+        arena.restart();
+
     }
     private void processKey(KeyStroke key) throws IOException {
         if (key.getKeyType() == KeyType.Character) {
             char c = key.getCharacter();
+            if (c== ' ' && gameOver){
+                restart();
+            }
             if (c == 'q' || c == 'Q') {
                 endGame();
             }
@@ -49,12 +60,32 @@ public class Game  {
             }
         } else {
             arena.processKey(key);
+            if (arena.verifyMonsterCollisions()) {
+                handleGameOver();
+            }
         }
     }
+
+    public void handleGameOver() throws IOException {
+        gameOver=true;
+        draw();
+    }
+
+    public void drawOverScreen(TextGraphics graphics){
+        graphics.putString(10,6, "GAME OVER");
+        graphics.putString(3,7,"Press 'Space' to restart");
+        graphics.putString(7,8," or 'Q' to quit");
+
+    }
+
     public void draw() throws IOException {
         screen.clear();
         TextGraphics graphics = screen.newTextGraphics();
-        arena.draw(graphics);
+        if (gameOver){
+            drawOverScreen(graphics);
+        }
+        else{arena.draw(graphics);}
+
         screen.refresh();
     }
 
