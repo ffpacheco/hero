@@ -5,10 +5,12 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 
 
 public class Hero extends Element{
-
+    private Position previousPosition;
     public Hero(Position position) {
         super(position);
+        this.previousPosition = position;
     }
+
 
     public Position moveLeft(){
         return new Position(getPosition().getX() - 1, getPosition().getY() );
@@ -23,7 +25,16 @@ public class Hero extends Element{
         return new Position(getPosition().getX(), getPosition().getY() - 1);
     }
 
+    @Override
+    public void setPosition(Position position) {
+        this.previousPosition = getPosition();
+        super.setPosition(position);
+    }
+    public Position getPreviousPosition() {
+        return previousPosition;
+    }
 
+    @Override
     public void draw(TextGraphics graphics) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#5fc787"));
         graphics.enableModifiers(SGR.BOLD);

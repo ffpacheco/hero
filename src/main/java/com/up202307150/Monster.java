@@ -9,7 +9,9 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import java.util.Random;
 
 public class Monster extends Element{
+
     private final Random random = new Random();
+
     public Monster(Position position) {
         super(position);
     }
